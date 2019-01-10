@@ -1,0 +1,25 @@
+#!/bin/bash
+
+bold=$(tput bold)
+normal=$(tput sgr0)
+green=$(tput setf 2)
+red=$(tput setf 4)
+
+ERRORS=()
+NAME=$(git branch | sed 's/* //')
+if [ "$NAME" != '(no branch)' ]; then
+    for file in $(git diff --diff-filter=d --cached --name-only); do
+        if file "$file" | grep --quiet shell; then
+            {
+                shellcheck "$file" && echo "${bold}${green}[OK]${normal}: successfully linted $file"
+            } || {
+                ERRORS+=("$file")
+            }
+        fi
+    done
+
+    if [ ${#ERRORS[@]} -ne 0 ]; then
+        echo "${bold}${red}[ERR]${normal}: lint failed with ${ERRORS[*]}"
+        exit 1
+    fi
+fi
