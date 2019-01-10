@@ -4,14 +4,26 @@ GREEN  := $(shell tput -Txterm setaf 2)
 YELLOW := $(shell tput -Txterm setaf 3)
 WHITE  := $(shell tput -Txterm setaf 7)
 RESET  := $(shell tput -Txterm sgr0)
+PWD    := $(shell pwd)
 
-.PHONY: lint install hooks proto build certs help
-default: help
+.PHONY: lint dotfiles
+default: all
+
+## Installs the dotfiles, the dependencies & the binaries
+all: install dotfiles
 
 ## Install git hooks on this repository
 hooks:
 	@cp -f ./scripts/pre-commit .git/hooks
 	@chmod +x .git/hooks/pre-commit
+
+## Installs the dependencies.
+install:
+	@scripts/install
+
+## Installs the dotfiles in the HOME folder.
+dotfiles:
+	@scripts/dotfiles
 
 ## Print this help message
 help:
