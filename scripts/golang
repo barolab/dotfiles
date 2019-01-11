@@ -1,0 +1,10 @@
+#!/bin/bash
+
+PWD=$(pwd)
+TMP="$PWD/tmp"
+
+mkdir -p "$TMP"
+git clone https://github.com/udhos/update-golang "$TMP/golang"
+cd "$TMP/golang" || return
+sudo ./update-golang.sh
+cd "$PWD" || return

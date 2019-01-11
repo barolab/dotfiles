@@ -10,12 +10,16 @@ PWD    := $(shell pwd)
 default: all
 
 ## Installs the dotfiles, the dependencies & the binaries
-all: install dotfiles
+all: golang install dotfiles
 
 ## Install git hooks on this repository
 hooks:
 	@cp -f ./scripts/pre-commit .git/hooks
 	@chmod +x .git/hooks/pre-commit
+
+## Installs golang
+golang:
+	@scripts/golang
 
 ## Installs the dependencies.
 install:
