@@ -73,13 +73,22 @@ man() {
 		man "$@"
 }
 
+# Update packages
+up() {
+    sudo apt update || true
+	sudo apt -y upgrade
+    sudo apt autoremove
+	sudo apt autoclean
+	sudo apt clean
+}
+
 # Source a secret
-function ss {
+ss() {
     # shellcheck disable=SC1090
     source ~/.secrets/"$1"
 }
 
 # Navigate to $HOME/Work directory
-function work {
+work() {
     cd "$HOME/Work" || return
 }
