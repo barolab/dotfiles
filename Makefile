@@ -10,12 +10,16 @@ PWD    := $(shell pwd)
 default: all
 
 ## Installs the dotfiles, the dependencies & the binaries
-all: golang install dotfiles
+all: rust golang install dotfiles
 
 ## Install git hooks on this repository
 hooks:
 	@cp -f ./scripts/pre-commit .git/hooks
 	@chmod +x .git/hooks/pre-commit
+
+## Installs rust
+rust:
+	@scripts/rust
 
 ## Installs golang
 golang:
