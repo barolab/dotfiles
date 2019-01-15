@@ -186,8 +186,10 @@ gimp() {
 		jess/gimp
 }
 
-keypass() {
-	ctr_del keypass
+alias keepass2="keepass"
+alias keypass="keepass"
+keepass() {
+	ctr_del keepass
 
 	docker run -d \
 		-v /tmp/.X11-unix:/tmp/.X11-unix \
@@ -195,7 +197,7 @@ keypass() {
 		-v /etc/machine-id:/etc/machine-id:ro \
 		-v /usr/share/X11/xkb:/usr/share/X11/xkb:ro \
 		-e "DISPLAY=unix${DISPLAY}" \
-		--name keypass \
+		--name keepass \
 		jess/keepass2
 }
 
@@ -210,6 +212,76 @@ pulseaudio() {
 		--group-add audio \
 		--name pulseaudio \
 		jess/pulseaudio
+}
+
+alias office="libreoffice"
+libreoffice(){
+	ctr_del libreoffice
+
+	docker run -d \
+		-v /etc/localtime:/etc/localtime:ro \
+		-v /tmp/.X11-unix:/tmp/.X11-unix \
+		-v "${HOME}/slides:/root/slides" \
+		-e "DISPLAY=unix${DISPLAY}" \
+		-e GDK_SCALE \
+		-e GDK_DPI_SCALE \
+		--name libreoffice \
+		jess/libreoffice
+}
+
+skype(){
+	ctr_del skype
+	ctr_link pulseaudio
+
+	docker run -d \
+		-v /etc/localtime:/etc/localtime:ro \
+		-v /tmp/.X11-unix:/tmp/.X11-unix \
+		-e "DISPLAY=unix${DISPLAY}" \
+		-e PULSE_SERVER=pulseaudio \
+		--link pulseaudio:pulseaudio \
+		--security-opt seccomp:unconfined \
+		--device /dev/video0 \
+		--group-add video \
+		--group-add audio \
+		--name skype \
+		jess/skype
+}
+
+slack() {
+	ctr_del slack
+
+	docker run -d \
+		-v /etc/localtime:/etc/localtime:ro \
+		-v /tmp/.X11-unix:/tmp/.X11-unix \
+		-v "${HOME}/.slack:/root/.config/Slack" \
+		-e "DISPLAY=unix${DISPLAY}" \
+		--device /dev/snd \
+		--device /dev/dri \
+		--device /dev/video0 \
+		--group-add audio \
+		--group-add video \
+		--ipc="host" \
+		--name slack \
+		jess/slack "$@"
+}
+
+spotify(){
+	ctr_del spotify
+
+	docker run -d \
+		-v /etc/localtime:/etc/localtime:ro \
+		-v /tmp/.X11-unix:/tmp/.X11-unix \
+        -v "$HOME/.config/spotify:/home/spotify/.config/spotify" \
+        -v "$HOME/.cache/spotify:/home/spotify/.cache/spotify" \
+		-e "DISPLAY=unix${DISPLAY}" \
+		-e QT_DEVICE_PIXEL_RATIO \
+		--security-opt seccomp:unconfined \
+		--device /dev/snd \
+		--device /dev/dri \
+		--group-add audio \
+		--group-add video \
+		--name spotify \
+		jess/spotify
 }
 
 steam() {
@@ -258,6 +330,7 @@ tormessenger() {
 		jess/tor-messenger
 }
 
+alias vscode="visualstudio"
 visualstudio() {
 	ctr_del visualstudio
 
@@ -271,8 +344,6 @@ visualstudio() {
 		--name visualstudio \
 		jess/vscode
 }
-
-alias vscode="visualstudio"
 
 vlc() {
 	ctr_del vlc
