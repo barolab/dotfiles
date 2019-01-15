@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Bash wrappers for docker run commands
-export DOCKER_REPO_PREFIX=jess
-
 ctr_rm() {
 	# shellcheck disable=SC2068
 	docker rm -f $@ 2>/dev/null || true
@@ -37,14 +34,14 @@ aws() {
 	docker run -it --rm \
 		-v "${HOME}/.aws:/root/.aws" \
 		--log-driver none \
-		${DOCKER_REPO_PREFIX}/awscli "$@"
+		jess/awscli "$@"
 }
 
 az() {
 	docker run -it --rm \
 		-v "${HOME}/.azure:/root/.azure" \
 		--log-driver none \
-		${DOCKER_REPO_PREFIX}/azure-cli "$@"
+		jess/azure-cli "$@"
 }
 
 gcloud() {
@@ -54,7 +51,7 @@ gcloud() {
 		-v "$(command -v docker):/usr/bin/docker" \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		--log-driver none \
-		${DOCKER_REPO_PREFIX}/gcloud "$@"
+		jess/gcloud "$@"
 }
 
 htop() {
@@ -62,20 +59,27 @@ htop() {
 		--pid host \
 		--net none \
 		--log-driver none \
-		${DOCKER_REPO_PREFIX}/htop
+		jess/htop
 }
+
 htpasswd() {
 	docker run -it --rm \
 		--net none \
 		--log-driver none \
-		${DOCKER_REPO_PREFIX}/htpasswd "$@"
+		jess/htpasswd "$@"
 }
 
 http() {
 	docker run -t --rm \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		--log-driver none \
-		${DOCKER_REPO_PREFIX}/httpie "$@"
+		jess/httpie "$@"
+}
+
+telnet() {
+	docker run -it --rm \
+		--log-driver none \
+		jess/telnet "$@"
 }
 
 mc() {
@@ -86,7 +90,16 @@ mc() {
 		-v "${cwd}:/home/mc/${name}" \
 		--workdir "/home/mc/${name}" \
 		--log-driver none \
-		${DOCKER_REPO_PREFIX}/mc "$@"
+		jess/mc "$@"
+}
+
+john() {
+	local file
+	file=$(realpath "$1")
+
+	docker run --rm -it \
+		-v "${file}:/root/$(basename "${file}")" \
+		jess/john "$@"
 }
 
 terraform() {
@@ -98,5 +111,200 @@ terraform() {
 		-e SSH_AUTH_SOCK \
 		--workdir /usr/src/repo \
  		--log-driver none \
-		${DOCKER_REPO_PREFIX}/terraform "$@"
+		jess/terraform "$@"
+}
+
+tor() {
+	ctr_del tor
+
+	docker run -d \
+		--net host \
+		--name tor \
+		jess/tor
+
+	sudo setup-tor-iptables
+	browser-exec "https://check.torproject.org/"
+}
+
+torproxy() {
+	ctr_del torproxy
+
+	docker run -d \
+		-v /etc/localtime:/etc/localtime:ro \
+		-p 9050:9050 \
+		--restart always \
+		--name torproxy \
+		jess/tor-proxy
+
+	hostess add torproxy "$(docker inspect --format '{{.NetworkSettings.Networks.bridge.IPAddress}}' torproxy)"
+}
+
+travis() {
+	docker run -it --rm \
+		-v "${HOME}/.travis:/root/.travis" \
+		-v "$(pwd):/usr/src/repo:ro" \
+		--workdir /usr/src/repo \
+		--log-driver none \
+		jess/travis "$@"
+}
+
+alias faas="faas-cli"
+faas-cli() {
+	docker run -it --rm \
+		-v "$(pwd):/root:ro" \
+		--log-driver none \
+		--entrypoint faas-cli \
+		openfaas/faas-cli:0.8.3 "$@"
+}
+
+pg() {
+	docker run -ti --rm \
+		-v "$(pwd):/root:ro" \
+		--workdir /root \
+		--log-driver none \
+		--entrypoint pg \
+		postgres "$@"
+}
+
+############################################
+#############    GUI TOOLS    ##############
+############################################
+gimp() {
+	ctr_del gimp
+
+	docker run -d \
+		-v /tmp/.X11-unix:/tmp/.X11-unix \
+		-v /etc/localtime:/etc/localtime:ro \
+		-v /etc/machine-id:/etc/machine-id:ro \
+		-v /usr/share/X11/xkb:/usr/share/X11/xkb:ro \
+		-v "${HOME}/Pictures:/root/Pictures" \
+		-v "${HOME}/.gtkrc:/root/.gtkrc" \
+		-e "DISPLAY=unix${DISPLAY}" \
+		-e GDK_SCALE \
+		-e GDK_DPI_SCALE \
+		--name gimp \
+		jess/gimp
+}
+
+keypass() {
+	ctr_del keypass
+
+	docker run -d \
+		-v /tmp/.X11-unix:/tmp/.X11-unix \
+		-v /etc/localtime:/etc/localtime:ro \
+		-v /etc/machine-id:/etc/machine-id:ro \
+		-v /usr/share/X11/xkb:/usr/share/X11/xkb:ro \
+		-e "DISPLAY=unix${DISPLAY}" \
+		--name keypass \
+		jess/keepass2
+}
+
+pulseaudio() {
+	ctr_del pulseaudio
+
+	docker run -d \
+		-p 4713:4713 \
+		-v /etc/localtime:/etc/localtime:ro \
+		--device /dev/snd \
+		--restart always \
+		--group-add audio \
+		--name pulseaudio \
+		jess/pulseaudio
+}
+
+steam() {
+	ctr_del steam
+	ctr_link pulseaudio
+
+	docker run -d \
+		-v /etc/localtime:/etc/localtime:ro \
+		-v /etc/machine-id:/etc/machine-id:ro \
+		-v /var/run/dbus:/var/run/dbus \
+		-v /tmp/.X11-unix:/tmp/.X11-unix \
+		-v "${HOME}/.steam:/home/steam" \
+		-e "DISPLAY=unix${DISPLAY}" \
+		-e PULSE_SERVER=pulseaudio \
+		--link pulseaudio:pulseaudio \
+		--device /dev/dri \
+		--name steam \
+		jess/steam
+}
+
+torbrowser() {
+	ctr_del torbrowser
+
+	docker run -d \
+		-v /etc/localtime:/etc/localtime:ro \
+		-v /tmp/.X11-unix:/tmp/.X11-unix \
+		-e "DISPLAY=unix${DISPLAY}" \
+		-e GDK_SCALE \
+		-e GDK_DPI_SCALE \
+		--device /dev/snd \
+		--name torbrowser \
+		jess/tor-browser
+}
+
+tormessenger() {
+	ctr_del tormessenger
+
+	docker run -d \
+		-v /etc/localtime:/etc/localtime:ro \
+		-v /tmp/.X11-unix:/tmp/.X11-unix \
+		-e "DISPLAY=unix${DISPLAY}" \
+		-e GDK_SCALE \
+		-e GDK_DPI_SCALE \
+		--device /dev/snd \
+		--name tormessenger \
+		jess/tor-messenger
+}
+
+visualstudio() {
+	ctr_del visualstudio
+
+	docker run -d \
+		-v /etc/localtime:/etc/localtime:ro \
+		-v /tmp/.X11-unix:/tmp/.X11-unix  \
+        -v "$HOME/.config/Code:/home/.config/Code" \
+        -v "$HOME/.vscode:/home/.vscode" \
+		-e "DISPLAY=unix${DISPLAY}" \
+		--device /dev/dri \
+		--name visualstudio \
+		jess/vscode
+}
+
+alias vscode="visualstudio"
+
+vlc() {
+	ctr_del vlc
+	ctr_link pulseaudio
+
+	docker run -d \
+		-v /etc/localtime:/etc/localtime:ro \
+		-v /tmp/.X11-unix:/tmp/.X11-unix \
+		-v "${HOME}/Torrents:/home/vlc/Torrents" \
+		-e "DISPLAY=unix${DISPLAY}" \
+		-e GDK_SCALE \
+		-e GDK_DPI_SCALE \
+		-e QT_DEVICE_PIXEL_RATIO \
+		--link pulseaudio:pulseaudio \
+		-e PULSE_SERVER=pulseaudio \
+		--group-add audio \
+		--group-add video \
+		--device /dev/dri \
+		--name vlc \
+		jess/vlc
+}
+
+wireshark() {
+	ctr_del wireshark
+
+	docker run -d \
+		-v /etc/localtime:/etc/localtime:ro \
+		-v /tmp/.X11-unix:/tmp/.X11-unix \
+		-e "DISPLAY=unix${DISPLAY}" \
+		--cap-add NET_RAW \
+		--cap-add NET_ADMIN \
+		--net host \
+		--name wireshark \
+		jess/wireshark
 }
