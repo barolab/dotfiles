@@ -1,0 +1,13 @@
+#!/bin/bash
+
+PWD=$(pwd)
+GLOBAL="$HOME/.composer"
+
+docker run -ti \
+	--rm \
+	--volume "$PWD:$PWD" \
+	--volume "$GLOBAL:$GLOBAL" \
+	--workdir "$PWD" \
+	--log-driver none \
+	--entrypoint php \
+	php:alpine "$@"

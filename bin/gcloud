@@ -1,0 +1,10 @@
+#!/bin/bash
+
+docker run -it \
+	--rm \
+	--volume "${HOME}/.gcloud:/root/.config/gcloud" \
+	--volume "${HOME}/.ssh:/root/.ssh:ro" \
+	--volume "$(command -v docker):/usr/bin/docker" \
+	--volume /var/run/docker.sock:/var/run/docker.sock \
+	--log-driver none \
+	jess/gcloud "$@"

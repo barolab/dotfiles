@@ -1,0 +1,11 @@
+#!/bin/bash
+
+cwd="$(pwd)"
+name="$(basename "$cwd")"
+
+docker run -it \
+	--rm \
+	--volume "${cwd}:/home/mc/${name}" \
+	--workdir "/home/mc/${name}" \
+	--log-driver none \
+	jess/mc "$@"

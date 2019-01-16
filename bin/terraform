@@ -1,0 +1,12 @@
+#!/bin/bash
+
+docker run -it \
+	--rm \
+	--volume "${HOME}:${HOME}:ro" \
+	--volume "$(pwd):/usr/src/repo" \
+	--volume /tmp:/tmp \
+	--env GOOGLE_APPLICATION_CREDENTIALS \
+	--env SSH_AUTH_SOCK \
+	--workdir /usr/src/repo \
+	--log-driver none \
+	jess/terraform "$@"

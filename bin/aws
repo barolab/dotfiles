@@ -1,0 +1,7 @@
+#!/bin/bash
+
+docker run -it \
+	--rm \
+	--volume "${HOME}/.aws:/root/.aws" \
+	--log-driver none \
+	jess/awscli "$@"
