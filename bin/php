@@ -3,7 +3,7 @@
 PWD=$(pwd)
 GLOBAL="$HOME/.composer"
 
-docker run -ti \
+docker run -t \
 	--rm \
 	--volume "$PWD:$PWD" \
 	--volume "$GLOBAL:$GLOBAL" \

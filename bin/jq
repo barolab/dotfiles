@@ -1,0 +1,8 @@
+#!/bin/bash
+
+docker run -ti \
+	--rm \
+	--volume "$(pwd):/root:ro" \
+	--workdir /root \
+	--entrypoint jq \
+	endeveit/docker-jq "$@"
