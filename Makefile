@@ -6,20 +6,20 @@ WHITE  := $(shell tput -Txterm setaf 7)
 RESET  := $(shell tput -Txterm sgr0)
 PWD    := $(shell pwd)
 
-.PHONY: lint dotfiles
+.PHONY: all hooks bin golang install dotfiles help
 default: all
 
 ## Installs the dotfiles, the dependencies & the binaries
-all: rust golang install dotfiles
+all: bin golang install dotfiles
 
 ## Install git hooks on this repository
 hooks:
 	@cp -f ./scripts/pre-commit .git/hooks
 	@chmod +x .git/hooks/pre-commit
 
-## Installs rust
-rust:
-	@scripts/rust
+## Installs fake binaries
+bin:
+	@scripts/bin
 
 ## Installs golang
 golang:

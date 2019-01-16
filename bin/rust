@@ -1,0 +1,15 @@
+#!/bin/bash
+
+PWD=$(pwd)
+USER=$(whoami)
+CARGO_REG="$HOME/.cargo/registry"
+
+docker run -ti \
+	--rm \
+	--env "USER=$USER" \
+	--volume "$PWD:$PWD" \
+	--volume "$CARGO_REG:/usr/local/cargo/registry" \
+	--workdir "$PWD" \
+	--log-driver none \
+	--entrypoint rust \
+	rust:slim "$@"

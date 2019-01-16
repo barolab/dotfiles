@@ -1,0 +1,13 @@
+#!/bin/bash
+
+PWD=$(pwd)
+CARGO_REG="$HOME/.cargo/registry"
+
+docker run -ti \
+	--rm \
+	--volume "$PWD:$PWD" \
+	--volume "$CARGO_REG:/usr/local/cargo/registry" \
+	--workdir "$PWD" \
+	--log-driver none \
+	--entrypoint rust-dbg \
+	rust:slim "$@"
