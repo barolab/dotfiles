@@ -1,0 +1,19 @@
+#!/bin/bash
+
+PWD=$(pwd)
+YARN="$HOME/.yarn"
+
+docker run -ti \
+	--rm \
+	--name node \
+	--env NPM_CONFIG_PREFIX=/usr/local/share/.config/npm/global \
+	--env NPM_CONFIG_BIN_LINKS=true \
+	--volume "$PWD:$PWD" \
+	--volume "$NPM:$NPM" \
+	--volume "$NPM:/usr/local/share/.config/npm/global" \
+	--volume "$YARN:$YARN" \
+	--volume "$YARN:/usr/local/share/.config/yarn/global" \
+	--workdir "$PWD" \
+	--log-driver none \
+	--entrypoint node \
+	node:alpine "$@"
