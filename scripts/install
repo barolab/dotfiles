@@ -1,6 +1,5 @@
 #!/bin/bash
 
-mkdir -p "$HOME/Work/github.com"
 mkdir -p "$HOME/.secrets"
 mkdir -p "$HOME/.kube"
 mkdir -p "$HOME/.ssh"
@@ -19,3 +18,5 @@ go get -u golang.org/x/tools/cmd/guru
 echo "Installed golang.org/x/tools/cmd/guru"
 go get -u github.com/cbednarski/hostess/cmd/hostess
 echo "Installed github.com/cbednarski/hostess/cmd/hostess"
+go get -u mvdan.cc/sh/cmd/shfmt
+echo "Installed mvdan.cc/sh/cmd/shfmt"
