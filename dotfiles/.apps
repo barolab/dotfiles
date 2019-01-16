@@ -27,93 +27,6 @@ ctr_link() {
 	done
 }
 
-############################################
-#############    CLI TOOLS    ##############
-############################################
-aws() {
-	docker run -it --rm \
-		-v "${HOME}/.aws:/root/.aws" \
-		--log-driver none \
-		jess/awscli "$@"
-}
-
-az() {
-	docker run -it --rm \
-		-v "${HOME}/.azure:/root/.azure" \
-		--log-driver none \
-		jess/azure-cli "$@"
-}
-
-gcloud() {
-	docker run -it --rm \
-		-v "${HOME}/.gcloud:/root/.config/gcloud" \
-		-v "${HOME}/.ssh:/root/.ssh:ro" \
-		-v "$(command -v docker):/usr/bin/docker" \
-		-v /var/run/docker.sock:/var/run/docker.sock \
-		--log-driver none \
-		jess/gcloud "$@"
-}
-
-htop() {
-	docker run -it --rm \
-		--pid host \
-		--net none \
-		--log-driver none \
-		jess/htop
-}
-
-htpasswd() {
-	docker run -it --rm \
-		--net none \
-		--log-driver none \
-		jess/htpasswd "$@"
-}
-
-http() {
-	docker run -t --rm \
-		-v /var/run/docker.sock:/var/run/docker.sock \
-		--log-driver none \
-		jess/httpie "$@"
-}
-
-telnet() {
-	docker run -it --rm \
-		--log-driver none \
-		jess/telnet "$@"
-}
-
-mc() {
-	cwd="$(pwd)"
-	name="$(basename "$cwd")"
-
-	docker run -it --rm \
-		-v "${cwd}:/home/mc/${name}" \
-		--workdir "/home/mc/${name}" \
-		--log-driver none \
-		jess/mc "$@"
-}
-
-john() {
-	local file
-	file=$(realpath "$1")
-
-	docker run --rm -it \
-		-v "${file}:/root/$(basename "${file}")" \
-		jess/john "$@"
-}
-
-terraform() {
-	docker run -it --rm \
-		-v "${HOME}:${HOME}:ro" \
-		-v "$(pwd):/usr/src/repo" \
-		-v /tmp:/tmp \
-		-e GOOGLE_APPLICATION_CREDENTIALS \
-		-e SSH_AUTH_SOCK \
-		--workdir /usr/src/repo \
- 		--log-driver none \
-		jess/terraform "$@"
-}
-
 tor() {
 	ctr_del tor
 
@@ -123,7 +36,7 @@ tor() {
 		jess/tor
 
 	sudo setup-tor-iptables
-	browser-exec "https://check.torproject.org/"
+	browse "https://check.torproject.org/"
 }
 
 torproxy() {
@@ -139,36 +52,34 @@ torproxy() {
 	hostess add torproxy "$(docker inspect --format '{{.NetworkSettings.Networks.bridge.IPAddress}}' torproxy)"
 }
 
-travis() {
-	docker run -it --rm \
-		-v "${HOME}/.travis:/root/.travis" \
-		-v "$(pwd):/usr/src/repo:ro" \
-		--workdir /usr/src/repo \
-		--log-driver none \
-		jess/travis "$@"
+torbrowser() {
+	ctr_del torbrowser
+
+	docker run -d \
+		-v /etc/localtime:/etc/localtime:ro \
+		-v /tmp/.X11-unix:/tmp/.X11-unix \
+		-e "DISPLAY=unix${DISPLAY}" \
+		-e GDK_SCALE \
+		-e GDK_DPI_SCALE \
+		--device /dev/snd \
+		--name torbrowser \
+		jess/tor-browser
 }
 
-alias faas="faas-cli"
-faas-cli() {
-	docker run -it --rm \
-		-v "$(pwd):/root:ro" \
-		--log-driver none \
-		--entrypoint faas-cli \
-		openfaas/faas-cli:0.8.3 "$@"
+tormessenger() {
+	ctr_del tormessenger
+
+	docker run -d \
+		-v /etc/localtime:/etc/localtime:ro \
+		-v /tmp/.X11-unix:/tmp/.X11-unix \
+		-e "DISPLAY=unix${DISPLAY}" \
+		-e GDK_SCALE \
+		-e GDK_DPI_SCALE \
+		--device /dev/snd \
+		--name tormessenger \
+		jess/tor-messenger
 }
 
-pg() {
-	docker run -ti --rm \
-		-v "$(pwd):/root:ro" \
-		--workdir /root \
-		--log-driver none \
-		--entrypoint pg \
-		postgres "$@"
-}
-
-############################################
-#############    GUI TOOLS    ##############
-############################################
 gimp() {
 	ctr_del gimp
 
@@ -215,7 +126,7 @@ pulseaudio() {
 }
 
 alias office="libreoffice"
-libreoffice(){
+libreoffice() {
 	ctr_del libreoffice
 
 	docker run -d \
@@ -229,7 +140,7 @@ libreoffice(){
 		jess/libreoffice
 }
 
-skype(){
+skype() {
 	ctr_del skype
 	ctr_link pulseaudio
 
@@ -265,14 +176,14 @@ slack() {
 		jess/slack "$@"
 }
 
-spotify(){
+spotify() {
 	ctr_del spotify
 
 	docker run -d \
 		-v /etc/localtime:/etc/localtime:ro \
 		-v /tmp/.X11-unix:/tmp/.X11-unix \
-        -v "$HOME/.config/spotify:/home/spotify/.config/spotify" \
-        -v "$HOME/.cache/spotify:/home/spotify/.cache/spotify" \
+		-v "${HOME}/.config/spotify:/home/spotify/.config/spotify" \
+		-v "${HOME}/.cache/spotify:/home/spotify/.cache/spotify" \
 		-e "DISPLAY=unix${DISPLAY}" \
 		-e QT_DEVICE_PIXEL_RATIO \
 		--security-opt seccomp:unconfined \
@@ -302,43 +213,15 @@ steam() {
 		jess/steam
 }
 
-torbrowser() {
-	ctr_del torbrowser
-
-	docker run -d \
-		-v /etc/localtime:/etc/localtime:ro \
-		-v /tmp/.X11-unix:/tmp/.X11-unix \
-		-e "DISPLAY=unix${DISPLAY}" \
-		-e GDK_SCALE \
-		-e GDK_DPI_SCALE \
-		--device /dev/snd \
-		--name torbrowser \
-		jess/tor-browser
-}
-
-tormessenger() {
-	ctr_del tormessenger
-
-	docker run -d \
-		-v /etc/localtime:/etc/localtime:ro \
-		-v /tmp/.X11-unix:/tmp/.X11-unix \
-		-e "DISPLAY=unix${DISPLAY}" \
-		-e GDK_SCALE \
-		-e GDK_DPI_SCALE \
-		--device /dev/snd \
-		--name tormessenger \
-		jess/tor-messenger
-}
-
 alias vscode="visualstudio"
 visualstudio() {
 	ctr_del visualstudio
 
 	docker run -d \
 		-v /etc/localtime:/etc/localtime:ro \
-		-v /tmp/.X11-unix:/tmp/.X11-unix  \
-        -v "$HOME/.config/Code:/home/.config/Code" \
-        -v "$HOME/.vscode:/home/.vscode" \
+		-v /tmp/.X11-unix:/tmp/.X11-unix \
+		-v "${HOME}/.config/Code:/home/.config/Code" \
+		-v "${HOME}/.vscode:/home/.vscode" \
 		-e "DISPLAY=unix${DISPLAY}" \
 		--device /dev/dri \
 		--name visualstudio \

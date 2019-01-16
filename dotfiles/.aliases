@@ -5,12 +5,12 @@ for opener in browser-exec xdg-open cmd.exe cygstart "start" open; do
 	if command -v $opener >/dev/null 2>&1; then
 		if [[ "$opener" == "cmd.exe" ]]; then
 			# shellcheck disable=SC2139
-			alias open="$opener /c start";
+			alias open="$opener /c start"
 		else
 			# shellcheck disable=SC2139
-			alias open="$opener";
+			alias open="$opener"
 		fi
-		break;
+		break
 	fi
 done
 
@@ -33,7 +33,7 @@ alias h="history"
 alias gc=". /usr/local/bin/gitdate && git commit -v "
 
 # Detect which `ls` flavor is in use
-if ls --color > /dev/null 2>&1; then # GNU `ls`
+if ls --color >/dev/null 2>&1; then # GNU `ls`
 	colorflag="--color"
 else # OS X `ls`
 	colorflag="-G"
@@ -112,3 +112,4 @@ alias prikey="more ~/.ssh/id_baro | xclip -selection clipboard | echo '=> Privat
 alias chrome="google-chrome"
 alias dc="docker-compose"
 alias dm="docker-machine"
+alias faas="faas-cli"
