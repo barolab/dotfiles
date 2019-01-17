@@ -8,6 +8,7 @@ doth() {
 	echo "  ss            - source a secret script in ~/.secrets"
 	echo "  dl            - open the Downloads folder"
 	echo "  map           - intuitive map function (eg. find . -name .gitattributes | map dirname)"
+	echo "  own           - run a chown recursively on the target to make you the owner"
 	echo "  mkd           - create a new directory and enter it"
 	echo "  tmpd          - make a temporary directory and enter it"
 	echo "  week          - get week number"

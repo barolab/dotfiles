@@ -72,6 +72,10 @@ alias grep='grep --color=auto '
 # Enable aliases to be sudo’ed
 alias sudo='sudo '
 
+# Give you ownership recursively
+# shellcheck disable=SC2139
+alias own="sudo chown -R $(whoami)"
+
 # Get week number
 alias week='date +%V'
 
