@@ -1,0 +1,52 @@
+#!/bin/bash
+
+mkdir -p "$HOME/.secrets"
+mkdir -p "$HOME/.kube"
+mkdir -p "$HOME/.ssh"
+
+sudo apt update || true
+sudo apt upgrade -y
+
+sudo apt install --no-install-recommends -y \
+	adduser \
+	automake \
+	bash-completion \
+	bc \
+	bzip2 \
+	ca-certificates \
+	coreutils \
+	curl \
+	dnsutils \
+	file \
+	findutils \
+	gcc \
+	git \
+	gnupg \
+	gnupg2 \
+	grep \
+	gzip \
+	hostname \
+	indent \
+	iptables \
+	less \
+	libc6-dev \
+	locales \
+	lsof \
+	make \
+	mount \
+	net-tools \
+	neovim \
+	ssh \
+	strace \
+	sudo \
+	tar \
+	tree \
+	tzdata \
+	unzip \
+	xclip \
+	xz-utils \
+	zip
+
+sudo apt autoremove
+sudo apt autoclean
+sudo apt clean
