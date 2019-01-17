@@ -3,9 +3,13 @@
 PWD=$(pwd)
 TMP="$PWD/tmp"
 
-mkdir -p "$TMP"
-git clone https://github.com/udhos/update-golang "$TMP/golang"
+if [ ! -d "$TMP/golang" ]; then
+	mkdir -p "$TMP"
+	git clone https://github.com/udhos/update-golang "$TMP/golang"
+fi
+
 cd "$TMP/golang" || return
+git pull
 sudo ./update-golang.sh
 cd "$PWD" || return
 
