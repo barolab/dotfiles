@@ -10,22 +10,26 @@ PWD    := $(shell pwd)
 default: all
 
 ## Installs the dotfiles, the dependencies & the binaries
-all: bin golang install dotfiles
+all: packages dotfiles docker golang bin
 
 ## Install git hooks on this repository
 hooks:
 	@cp -f ./scripts/pre-commit .git/hooks
 	@chmod +x .git/hooks/pre-commit
 
-## Installs fake binaries
+## Installs binaries in /usr/local/bin
 bin:
 	@scripts/bin
+
+## Installs docker
+docker:
+	@scripts/docker
 
 ## Installs golang
 golang:
 	@scripts/golang
 
-## Installs the dependencies.
+## Installs debian packages.
 packages:
 	@scripts/packages
 

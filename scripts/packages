@@ -46,7 +46,3 @@ sudo apt install --no-install-recommends -y \
 	xclip \
 	xz-utils \
 	zip
-
-sudo apt autoremove
-sudo apt autoclean
-sudo apt clean

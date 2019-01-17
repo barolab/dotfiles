@@ -4,10 +4,19 @@ This repository contains all the dotfiles for my daily use. It features a bunch 
 
 ## Getting Started
 
-All you need to do is clone this repository, and run `make help` to have details about the available commands :
+The quick setup that install everything :
 
 ```sh
-$ make
+cd $HOME
+git clone git@github.com:barolab/dotfiles.git
+cd dotfiles
+make
+```
+
+You can also choose the components you want to install :
+
+```sh
+$ make help
 
 Usage:
   make <target>
@@ -15,9 +24,10 @@ Usage:
 Targets:
   all        Installs the dotfiles, the dependencies & the binaries
   hooks      Install git hooks on this repository
-  install    Installs the dependencies.
+  bin        Installs binaries in /usr/local/bin
+  docker     Installs docker
+  golang     Installs golang
+  packages   Installs debian packages.
   dotfiles   Installs the dotfiles in the HOME folder.
   help       Print this help message
 ```
-
-> Running `make` will bootsrap a brand new environment
