@@ -6,11 +6,11 @@ WHITE  := $(shell tput -Txterm setaf 7)
 RESET  := $(shell tput -Txterm sgr0)
 PWD    := $(shell pwd)
 
-.PHONY: all hooks bin golang packages dotfiles help
+.PHONY: all hooks bin vim golang packages dotfiles help
 default: all
 
 ## Installs the dotfiles, the dependencies & the binaries
-all: packages dotfiles docker golang bin
+all: packages dotfiles docker golang bin vim
 
 ## Install git hooks on this repository
 hooks:
@@ -20,6 +20,10 @@ hooks:
 ## Installs binaries in /usr/local/bin
 bin:
 	@scripts/bin
+
+## Installs & configure vim with github.com/jessfraz/.vim
+vim:
+	@scripts/vim
 
 ## Installs docker
 docker:
