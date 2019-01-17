@@ -27,5 +27,26 @@ go get -u golang.org/x/tools/cmd/guru
 echo "Installed golang.org/x/tools/cmd/guru"
 go get -u github.com/cbednarski/hostess/cmd/hostess
 echo "Installed github.com/cbednarski/hostess/cmd/hostess"
+go get -u github.com/spf13/cobra/cobra
+echo "Installed github.com/spf13/cobra/cobra"
 go get -u mvdan.cc/sh/cmd/shfmt
 echo "Installed mvdan.cc/sh/cmd/shfmt"
+
+projects=(genuinetools/binctr genuinetools/img kubernetes/kubernetes kubernetes/release kubernetes/sig-release)
+for project in "${projects[@]}"; do
+	owner=$(dirname "$project")
+	repo=$(basename "$project")
+
+	# Cleanup directory if it already exist
+	if [[ -d "${HOME}/${repo}" ]]; then
+		rm -rf "${HOME:?}/${repo}"
+	fi
+
+	mkdir -p "${GOPATH}/src/github.com/${owner}"
+	if [[ ! -d "${GOPATH}/src/github.com/${project}" ]]; then
+		cd "${GOPATH}/src/github.com/${owner}" || return 1
+		git clone "git@github.com:${project}.git"
+	else
+		echo "found ${project} already in gopath"
+	fi
+done
