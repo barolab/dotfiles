@@ -116,4 +116,5 @@ alias prikey="more ~/.ssh/id_baro | xclip -selection clipboard | echo '=> Privat
 alias chrome="google-chrome"
 alias dc="docker-compose"
 alias dm="docker-machine"
+alias sk="skaffold"
 alias faas="faas-cli"
