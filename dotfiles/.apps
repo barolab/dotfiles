@@ -212,20 +212,25 @@ steam() {
 		--name steam \
 		jess/steam
 }
-
+alias code="visualstudio"
 alias vscode="visualstudio"
 visualstudio() {
 	ctr_del visualstudio
 
+	[[ -z "$1" ]] && WKD="$GOPATH/src" || WKD="$(realpath $1)"
+
 	docker run -d \
 		-v /etc/localtime:/etc/localtime:ro \
 		-v /tmp/.X11-unix:/tmp/.X11-unix \
-		-v "${HOME}/.config/Code:/home/.config/Code" \
-		-v "${HOME}/.vscode:/home/.vscode" \
+		-v "${HOME}/.cache:/home/user/.cache" \
+		-v "${HOME}/.config/Code:/home/user/.config/Code" \
+		-v "${HOME}/.vscode:/home/user/.vscode" \
+		-v "${WKD}:${WKD}" \
 		-e "DISPLAY=unix${DISPLAY}" \
 		--device /dev/dri \
 		--name visualstudio \
-		jess/vscode
+		--workdir "${WKD}" \
+		barolab/vscode "${WKD}"
 }
 
 vlc() {
