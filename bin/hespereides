@@ -1,0 +1,10 @@
+#!/bin/bash
+
+PWD=$(pwd)
+
+docker run -it \
+	--rm \
+	--volume "${PWD}:${PWD}" \
+	--volume "${HOME}/.hesperides:/home/user/.hesperides" \
+	--log-driver none \
+	barolab/hesperides-cli "$@"
