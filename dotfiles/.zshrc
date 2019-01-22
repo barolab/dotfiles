@@ -26,3 +26,11 @@ plugins=(git gitfast git-flow kubectl last-working-dir common-aliases docker vsc
 # Load oh-my-zsh script
 # shellcheck disable=SC1090
 source "$ZSH/oh-my-zsh.sh"
+
+# Load kubectl prompt data
+# shellcheck disable=SC1090
+source "$ZSH/plugins/zsh-kubectl-prompt/kubectl.zsh"
+
+# Add current kubernetes cluster to prompt
+# shellcheck disable=SC2034,SC2016
+RPROMPT='%{$fg[blue]%}($ZSH_KUBECTL_PROMPT)%{$reset_color%}'
