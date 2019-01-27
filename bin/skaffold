@@ -1,0 +1,10 @@
+#!/bin/bash
+
+PWD=$(pwd)
+
+docker run -ti \
+	--rm \
+	--volume "$PWD:$PWD" \
+	--workdir "$PWD" \
+	--log-driver none \
+	barolab/skaffold "$@"

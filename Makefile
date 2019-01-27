@@ -29,6 +29,10 @@ vim:
 docker:
 	@scripts/docker
 
+## Installs kubectl
+kubectl:
+	@scripts/kubectl
+
 ## Installs golang
 golang:
 	@scripts/golang
