@@ -212,7 +212,7 @@ steam() {
 		--name steam \
 		jess/steam
 }
-alias code="visualstudio"
+
 alias vscode="visualstudio"
 visualstudio() {
 	ctr_del visualstudio
