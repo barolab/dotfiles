@@ -1,0 +1,59 @@
+#!/bin/bash
+
+PWD=$(pwd)
+BASE_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
+BASE_CACHE=${XDG_CACHE_HOME:-$HOME/.cache}
+BASE_CONFIG=${XDG_CONFIG_HOME:-$HOME/.config}
+
+ANDROID_SDK="${BASE_HOME}/android"
+ANDROID_KEYS="${BASE_CONFIG}/android"
+ANDROID_CACHE="${BASE_CACHE}/android"
+GRADLE_CACHE="${BASE_CACHE}/gradle"
+
+mkdir -p "${ANDROID_KEYS}" "${GRADLE_CACHE}"
+
+if [[ ! -d "${ANDROID_CACHE}" ]]; then 
+  mkdir -p "${ANDROID_CACHE}"
+  touch "${ANDROID_CACHE}/repositories.cfg"
+fi
+
+if [[ ! -d "${ANDROID_SDK}" ]]; then 
+  echo "Copying android SDK to ${ANDROID_SDK}"
+  mkdir -p "${ANDROID_SDK}"
+  docker run -it --rm -v "${ANDROID_SDK}:/sdk" thyrlian/android-sdk-vnc bash -c 'cp -a /opt/android-sdk/. /sdk'
+fi
+
+docker rm -f android 2>/dev/null || true
+docker run \
+  --rm \
+  --detach \
+  --privileged \
+  --name android \
+  --volume "${ANDROID_SDK}:/opt/android-sdk" \
+  --volume "${ANDROID_KEYS}:/root/.ssh" \
+  --volume "${ANDROID_CACHE}:/root/.android" \
+  --volume "${GRADLE_CACHE}:/root/.gradle/caches" \
+  --volume "${PWD}:${PWD}" \
+  --workdir "${PWD}" \
+  --publish 2222:22 \
+  --publish 5037:5037 \
+  --publish 5901:5901 \
+  thyrlian/android-sdk-vnc
+
+bold=$(tput bold)
+normal=$(tput sgr0)
+green=$(tput setf 2)
+red=$(tput setf 4)
+
+echo ""
+echo "${bold}${green}ANDROID SDK STARTING....${normal}"
+echo ""
+echo " - 127.0.0.1:2222 for ${red}SSH${normal}"
+echo " - 127.0.0.1:5037 for ${red}ADB${normal}"
+echo " - 127.0.0.1:5901 for ${red}VNC${normal}"
+echo ""
+echo " - ${red}${ANDROID_SDK}${normal} is where the sdk is stored"
+echo " - ${red}${ANDROID_KEYS}${normal} is where the keys are stored"
+
+
+docker exec -ti android /bin/bash
