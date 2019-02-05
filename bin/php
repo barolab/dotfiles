@@ -1,13 +1,15 @@
 #!/bin/bash
 
 PWD=$(pwd)
-GLOBAL="$HOME/.composer"
+BASE_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
+COMPOSER_HOME="${BASE_HOME}/composer"
 
+mkdir -p "${COMPOSER_HOME}"
 docker run -t \
 	--rm \
-	--volume "$PWD:$PWD" \
-	--volume "$GLOBAL:$GLOBAL" \
-	--workdir "$PWD" \
+	--volume "${COMPOSER_HOME}:${COMPOSER_HOME}" \
+	--volume "${PWD}:${PWD}" \
+	--workdir "${PWD}" \
 	--log-driver none \
 	--entrypoint php \
-	php:alpine "$@"
+	php:alpine "${@}"

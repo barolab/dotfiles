@@ -1,19 +1,22 @@
 #!/bin/bash
 
 PWD=$(pwd)
-YARN="$HOME/.yarn"
+BASE_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
+YARN_HOME="${BASE_HOME}/yarn"
+NPM_HOME="${BASE_HOME}/npm"
 
+mkdir -p "${YARN_HOME}" "${NPM_HOME}"
 docker run -ti \
 	--rm \
 	--name node \
 	--env NPM_CONFIG_PREFIX=/usr/local/share/.config/npm/global \
 	--env NPM_CONFIG_BIN_LINKS=true \
-	--volume "$PWD:$PWD" \
-	--volume "$NPM:$NPM" \
-	--volume "$NPM:/usr/local/share/.config/npm/global" \
-	--volume "$YARN:$YARN" \
-	--volume "$YARN:/usr/local/share/.config/yarn/global" \
-	--workdir "$PWD" \
+	--volume "${PWD}:${PWD}" \
+	--volume "${NPM_HOME}:${NPM_HOME}" \
+	--volume "${NPM_HOME}:/usr/local/share/.config/npm/global" \
+	--volume "${YARN_HOME}:${YARN_HOME}" \
+	--volume "${YARN_HOME}:/usr/local/share/.config/yarn/global" \
+	--workdir "${PWD}" \
 	--log-driver none \
 	--entrypoint node \
-	node:alpine "$@"
+	node:alpine "${@}"

@@ -3,4 +3,4 @@
 docker run -it \
 	--rm \
 	--log-driver none \
-	jess/telnet "$@"
+	jess/telnet "${@}"

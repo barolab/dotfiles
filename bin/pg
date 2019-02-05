@@ -6,4 +6,4 @@ docker run -ti \
 	--workdir /root \
 	--log-driver none \
 	--entrypoint pg \
-	postgres "$@"
+	postgres "${@}"

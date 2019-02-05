@@ -9,4 +9,4 @@ docker run -it \
 	--env SSH_AUTH_SOCK \
 	--workdir /usr/src/repo \
 	--log-driver none \
-	jess/terraform "$@"
+	jess/terraform "${@}"

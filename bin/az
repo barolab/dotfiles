@@ -1,7 +1,11 @@
 #!/bin/bash
 
+BASE_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
+AZ_HOME="${BASE_HOME}/azure"
+
+mkdir -p "${AZ_HOME}"
 docker run -it \
 	--rm \
-	--volume "${HOME}/.azure:/root/.azure" \
+	--volume "${AZ_HOME}:/root/.azure" \
 	--log-driver none \
-	jess/azure-cli "$@"
+	jess/azure-cli "${@}"

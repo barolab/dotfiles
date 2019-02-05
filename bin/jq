@@ -5,4 +5,4 @@ docker run -ti \
 	--volume "$(pwd):/root:ro" \
 	--workdir /root \
 	--entrypoint jq \
-	endeveit/docker-jq "$@"
+	endeveit/docker-jq "${@}"

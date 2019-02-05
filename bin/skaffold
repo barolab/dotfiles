@@ -4,7 +4,7 @@ PWD=$(pwd)
 
 docker run -ti \
 	--rm \
-	--volume "$PWD:$PWD" \
-	--workdir "$PWD" \
+	--volume "${PWD}:${PWD}" \
+	--workdir "${PWD}" \
 	--log-driver none \
-	barolab/skaffold "$@"
+	barolab/skaffold "${@}"

@@ -1,14 +1,20 @@
 #!/bin/sh
 
+BASE_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
+COMPOSER_HOME="${BASE_HOME}/composer"
+CARGO_HOME="${BASE_HOME}/cargo/registry"
+YARN_HOME="${BASE_HOME}/yarn"
+NPM_HOME="${BASE_HOME}/npm"
+
 export GOPATH="${HOME}/.go"
 export PATH="/sbin:${PATH}"
 export PATH="/usr/local/bin:${PATH}"
 export PATH="/usr/local/go/bin:${PATH}"
 export PATH="${GOPATH}/bin:${PATH}"
-export PATH="${HOME}/.cargo/bin:${PATH}"
-export PATH="${HOME}/.composer/vendor/bin:${PATH}"
-export PATH="${HOME}/.npm/bin:${PATH}"
-export PATH="${HOME}/.yarn/node_modules/.bin:${PATH}"
+export PATH="${NPM_HOME}/bin:${PATH}"
+export PATH="${CARGO_HOME}/bin:${PATH}"
+export PATH="${YARN_HOME}/node_modules/.bin:${PATH}"
+export PATH="${COMPOSER_HOME}/vendor/bin:${PATH}"
 
 export CDPATH="${GOPATH}/src/github.com:${CDPATH}"
 export CDPATH="${GOPATH}/src/golang.org:${CDPATH}"

@@ -2,14 +2,16 @@
 
 PWD=$(pwd)
 USER=$(whoami)
-CARGO_REG="$HOME/.cargo/registry"
+BASE_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
+CARGO_HOME="${BASE_HOME}/cargo/registry"
 
+mkdir -p "${CARGO_HOME}"
 docker run -ti \
 	--rm \
-	--env "USER=$USER" \
-	--volume "$PWD:$PWD" \
-	--volume "$CARGO_REG:/usr/local/cargo/registry" \
-	--workdir "$PWD" \
+	--env "USER=${USER}" \
+	--volume "$CARGO_HOME:/usr/local/cargo/registry" \
+	--volume "${PWD}:${PWD}" \
+	--workdir "${PWD}" \
 	--log-driver none \
 	--entrypoint cargo-clippy \
-	rust:slim "$@"
+	rust:slim "${@}"

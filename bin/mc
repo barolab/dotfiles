@@ -8,4 +8,4 @@ docker run -it \
 	--volume "${cwd}:/home/mc/${name}" \
 	--workdir "/home/mc/${name}" \
 	--log-driver none \
-	jess/mc "$@"
+	jess/mc "${@}"

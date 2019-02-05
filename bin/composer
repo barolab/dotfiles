@@ -1,8 +1,12 @@
 #!/bin/bash
 
+BASE_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
+COMPOSER_HOME="${BASE_HOME}/composer"
+
+mkdir -p "${COMPOSER_HOME}"
 docker run -ti \
 	--rm \
 	--volume "$(pwd):/app" \
-	--volume "$HOME/.composer:/tmp" \
+	--volume "${COMPOSER_HOME}:/tmp" \
 	--log-driver none \
-	composer "$@"
+	composer "${@}"
