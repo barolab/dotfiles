@@ -13,5 +13,5 @@ docker run -ti \
 	--volume "${PWD}:${PWD}" \
 	--workdir "${PWD}" \
 	--log-driver none \
-	--entrypoint rust-dbg \
+	--entrypoint clippy-driver \
 	rust:slim "${@}"
