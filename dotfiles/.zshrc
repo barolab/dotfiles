@@ -21,7 +21,7 @@ HIST_STAMPS="dd/mm/yyyy"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # shellcheck disable=SC2034
-plugins=(git gitfast git-flow kubectl last-working-dir common-aliases docker vscode golang rust history-substring-search)
+plugins=(git gitfast git-flow kubectl minikube last-working-dir common-aliases docker vscode golang rust history-substring-search)
 
 # Load oh-my-zsh script
 # shellcheck disable=SC1090
