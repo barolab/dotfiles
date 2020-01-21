@@ -35,6 +35,8 @@ go get -u github.com/spf13/cobra/cobra
 echo "Installed github.com/spf13/cobra/cobra"
 go get -u mvdan.cc/sh/cmd/shfmt
 echo "Installed mvdan.cc/sh/cmd/shfmt"
+go get -u github.com/gopasspw/gopass
+echo "Installed github.com/gopasspw/gopass"
 
 projects=(genuinetools/binctr genuinetools/img kubernetes/kubernetes kubernetes/release kubernetes/sig-release)
 for project in "${projects[@]}"; do
