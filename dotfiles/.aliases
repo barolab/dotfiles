@@ -119,3 +119,17 @@ alias dm="docker-machine"
 alias sk="skaffold"
 alias faas="faas-cli"
 alias pass="gopass"
+
+# Git aliases
+git-standup() {
+    author=${AUTHOR:="$(git config user.name)"}
+    since=yesterday
+    if [[ $(date +%u) == 1 ]] ; then
+        since="2 days ago"
+    fi
+
+    git log --color --all --graph --since "$since" --author="$author" --pretty=format:'%Cred %C(bold blue)<%an>%Creset -%C(yellow)%d%Creset %Cgreen(%cr)%Creset %B'
+}
+
+alias glols='git log --graph --pretty='\''%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'\'' --stat'
+alias glol='git log --graph --pretty='\''%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'\'
