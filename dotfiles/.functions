@@ -6,6 +6,15 @@ mkd() {
 	cd "$@" || exit
 }
 
+# Get weather in a city
+weather() {
+	city="$1"
+	if [ "${city}" -eq "" ]; then
+		city="nantes"
+	fi
+	curl "https://v2.wttr.in/${city}"
+}
+
 # Make a temporary directory and enter it
 tmpd() {
 	local dir
