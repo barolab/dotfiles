@@ -1,3 +1,0 @@
-#!/bin/bash
-
-find "$(pwd)/android" -name "*" -exec sh -c 'f=$(basename "$1") && sudo ln -sfn "$1" "/usr/local/bin/$f" && echo "Installed $f"' -- {} \;

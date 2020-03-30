@@ -33,10 +33,6 @@ kubectl:
 golang:
 	@scripts/golang
 
-## Installs android
-android:
-	@scripts/android
-
 ## Installs debian packages.
 packages:
 	@scripts/packages
