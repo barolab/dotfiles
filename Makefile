@@ -6,11 +6,11 @@ WHITE  := $(shell tput -Txterm setaf 7)
 RESET  := $(shell tput -Txterm sgr0)
 PWD    := $(shell pwd)
 
-.PHONY: all hooks bin vim golang android packages dotfiles help
+.PHONY: all hooks vim ash asdf docker packages dotfiles help
 default: all
 
 ## Installs the dotfiles, the dependencies & the binaries
-all: packages dotfiles docker golang bin vim
+all: packages zsh asdf dotfiles docker golang vim
 
 ## Install git hooks on this repository
 hooks:
@@ -21,15 +21,19 @@ hooks:
 vim:
 	@scripts/vim
 
+## Installs & configure zsh
+zsh:
+	@scripts/zsh
+
+## Installs & configure asdf
+asdf:
+	@scripts/asdf
+
 ## Installs docker
 docker:
 	@scripts/docker
 
-## Installs kubectl
-kubectl:
-	@scripts/kubectl
-
-## Installs golang
+## Installs golang tools
 golang:
 	@scripts/golang
 

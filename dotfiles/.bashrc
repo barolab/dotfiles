@@ -27,6 +27,15 @@ if [ -x /usr/bin/dircolors ]; then
 	alias egrep='egrep --color=auto'
 fi
 
+# Load ASDF
+# shellcheck disable=SC1090
+source ~/.asdf/asdf.sh
+
+if [[ "$SHELL" == "/usr/bin/bash" ]]; then
+    # shellcheck disable=SC1090
+    source ~/.asdf/completions/asdf.bash
+fi
+
 # Enable kubectl bash completion
 if hash kubectl 2>/dev/null; then
 	# shellcheck source=/dev/null

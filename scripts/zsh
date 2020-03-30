@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# Change default shell to ZSH
+USER_SHELL=$(awk -F: -v user="$(whoami)" '$1 == user {print $NF}' /etc/passwd)
+echo "$USER_SHELL"
+if [[ "$USER_SHELL" == "/usr/bin/zsh" ]]; then
+    echo "User $(whoami) is already using ZSH"
+else
+    chsh -s /bin/zsh "$(whoami)"
+fi
+
+# Install custom zsh plugins
+ZSH_CUSTOM=${ZSH_CUSTOM:=~/.oh-my-zsh/custom}
+
+# Install plugins for python virual env
+if [[ ! -d "$ZSH_CUSTOM/plugins/autoswitch_virtualenv" ]]; then
+    git clone "https://github.com/MichaelAquilina/zsh-autoswitch-virtualenv.git" "$ZSH_CUSTOM/plugins/autoswitch_virtualenv"
+else
+    git -C "$ZSH_CUSTOM/plugins/autoswitch_virtualenv" pull origin master
+fi
+
+# Install plugins for better autocompletion
+if [[ ! -d "$ZSH_CUSTOM/plugins/zsh-completions" ]]; then
+    git clone "https://github.com/zsh-users/zsh-completions.git" "$ZSH_CUSTOM/plugins/zsh-completions"
+else
+    git -C "$ZSH_CUSTOM/plugins/zsh-completions" pull origin master
+fi
+
+# Install plugins for kubectl prompt
+if [[ ! -d "$ZSH_CUSTOM/plugins/zsh-kubectl-prompt" ]]; then
+    git clone "https://github.com/superbrothers/zsh-kubectl-prompt.git" "$ZSH_CUSTOM/plugins/zsh-kubectl-prompt"
+else
+    git -C "$ZSH_CUSTOM/plugins/zsh-kubectl-prompt" pull origin master
+fi

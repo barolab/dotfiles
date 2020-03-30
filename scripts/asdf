@@ -1,0 +1,88 @@
+#!/bin/bash
+
+# Install ASDF version v0.7.8
+if [[ ! -d ~/.asdf ]]; then
+    git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.7.8
+fi
+
+# Update ASDF
+asdf update
+
+plugins=(
+    "argo"
+    "bat"
+    "bazel"
+    "cue"
+    "consul"
+    "dep"
+    "docker-slim"
+    "doctl"
+    "dive"
+    "eksctl"
+    "etcd"
+    "fd"
+    "fluxctl"
+    "gcloud"
+    "golang"
+    "helm"
+    "hub"
+    "k9s"
+    "ksonnet"
+    "kube-capacity"
+    "kubectl"
+    "kubectl-bindrole"
+    "kubectx"
+    "kubeseal"
+    "kubesec"
+    "kubeval"
+    "kustomize"
+    "mc"
+    "minio"
+    "minikube"
+    "mkcert"
+    "nodejs"
+    "nomad"
+    "operator-sdk"
+    "packer"
+    "protoc"
+    "python"
+    "rbac-lookup"
+    "redis"
+    "reg"
+    "ruby"
+    "rust"
+    "serf"
+    "scenery"
+    "shellcheck"
+    "shfmt"
+    "skaffold"
+    "starship"
+    "stern"
+    "talos"
+    "tanka"
+    "terraform"
+    "terraform-docs"
+    "terraform-validator"
+    "terragrunt"
+    "tflint"
+    "tfsec"
+    "tilt"
+    "vault"
+    "velero"
+    "yarn"
+    "yq"
+)
+
+# Install plugins
+for p in "${plugins[@]}"; do
+    asdf plugin-add "$p"
+done
+
+# Install nodejs release team keyring
+bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
+
+# Install latest version of the binaries, and set global vars
+for p in "${plugins[@]}"; do
+    asdf install "$p" latest
+    asdf global "$p" "$(asdf list "$p" | head -n1 | sed -e 's/^[[:space:]]*//')"
+done
