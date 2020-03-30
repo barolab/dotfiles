@@ -16,7 +16,8 @@ export HISTCONTROL=ignoredups;
 # Make some commands not show up in history
 export HISTIGNORE=" *:ls:cd:cd -:pwd:clear:exit:date:* --help:* -h:pony:pony add *:pony update *:pony save *:pony ls:pony ls *";
 
-# COnfigure kubectl config files
+# Configure kubectl
+export KUBE_EDITOR=vim
 export KUBECONFIG=$HOME/.kube/config
 for c in ~/.kube/*/config; do
     export KUBECONFIG="$KUBECONFIG:$c"
