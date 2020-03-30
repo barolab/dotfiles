@@ -4,6 +4,7 @@ BASE_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 COMPOSER_HOME="${BASE_HOME}/composer"
 CARGO_HOME="${BASE_HOME}/cargo/registry"
 YARN_HOME="${BASE_HOME}/yarn"
+KREW_HOME="${KREW_ROOT:-$HOME/.krew}"
 NPM_HOME="${BASE_HOME}/npm"
 
 export GOPATH="${HOME}/.go"
@@ -13,8 +14,9 @@ export PATH="/usr/local/bin:${PATH}"
 export PATH="/usr/local/go/bin:${PATH}"
 export PATH="${GOPATH}/bin:${PATH}"
 export PATH="${NPM_HOME}/bin:${PATH}"
-export PATH="${CARGO_HOME}/bin:${PATH}"
+export PATH="${KREW_HOME}/bin:$PATH"
 export PATH="${YARN_HOME}/node_modules/.bin:${PATH}"
+export PATH="${CARGO_HOME}/bin:${PATH}"
 export PATH="${COMPOSER_HOME}/vendor/bin:${PATH}"
 
 export CDPATH="${GOPATH}/src/github.com:${CDPATH}"
