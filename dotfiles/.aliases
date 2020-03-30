@@ -119,6 +119,8 @@ alias dm="docker-machine"
 alias sk="skaffold"
 alias faas="faas-cli"
 alias pass="gopass"
+alias tf="terraform"
+alias tg="terragrunt"
 
 # Git aliases
 git-standup() {
