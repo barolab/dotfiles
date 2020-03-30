@@ -1,8 +1,0 @@
-#!/bin/bash
-
-docker run -it \
-	--rm \
-	--volume "$(pwd):/root:ro" \
-	--log-driver none \
-	--entrypoint faas-cli \
-	openfaas/faas-cli:0.8.3 "${@}"

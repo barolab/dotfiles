@@ -17,10 +17,6 @@ hooks:
 	@cp -f ./scripts/pre-commit .git/hooks
 	@chmod +x .git/hooks/pre-commit
 
-## Installs binaries in /usr/local/bin
-bin:
-	@scripts/bin
-
 ## Installs & configure vim with github.com/jessfraz/.vim
 vim:
 	@scripts/vim

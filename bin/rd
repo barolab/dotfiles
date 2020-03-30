@@ -1,6 +1,0 @@
-#!/bin/bash
-
-docker run -ti --rm \
-	--name rundeck-cli \
-	--volume "${HOME}:/home/user" \
-	barolab/rundeck-cli "${@}"

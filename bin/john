@@ -1,8 +1,0 @@
-#!/bin/bash
-
-file=$(realpath "$1")
-
-docker run -it \
-	--rm \
-	--volume "${file}:/root/$(basename "${file}")" \
-	jess/john "${@}"

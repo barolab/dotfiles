@@ -1,7 +1,0 @@
-#!/bin/bash
-
-docker run -t \
-	--rm \
-	--volume /var/run/docker.sock:/var/run/docker.sock \
-	--log-driver none \
-	jess/httpie "${@}"
