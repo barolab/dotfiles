@@ -7,7 +7,7 @@ RESET  := $(shell tput -Txterm sgr0)
 PWD    := $(shell pwd)
 
 .PHONY: all hooks vim ash asdf docker packages dotfiles help
-default: all
+default: help
 
 ## Installs the dotfiles, the dependencies & the binaries
 all: packages zsh asdf dotfiles docker golang vim

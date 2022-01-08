@@ -100,6 +100,7 @@
 	# More info: <http://www.git-tower.com/blog/make-git-rebase-safe-on-osx/>
 	trustctime = false
 	editor = vim
+	excludesfile = /home/rbailly/.gitignore
 
 [color]
 	ui = auto
@@ -154,5 +155,12 @@
 	insteadOf = "gist:"
 
 [user]
-	name = Bailly Romain
-	email = rbailly17000@gmail.com
+	name = rbailly-talend
+	email = rbailly@talend.com
+	signingkey = 4EBE192ED4403700
+
+[commit]
+	gpgsign = true
+
+[hub]
+	protocol = git

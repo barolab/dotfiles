@@ -26,6 +26,13 @@ alias .....="cd ../../../.."
 alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
 
+alias kshoot="kubectl -n admin run netshoot --rm --image=nicolaka/netshoot --attach -ti -- sh"
+alias kgrpcurl="kubectl -n admin run grpcurl --rm --image=networld/grpcurl --attach -ti -- sh"
+alias kcurl="kubectl -n admin run curl --rm --image=curlimages/curl --attach -ti -- sh"
+alias kdig="kubectl -n admin run dig --rm --image=tutum/dnsutils --attach -ti -- sh"
+alias knc="kubectl -n admin run netcat --rm --image=subfuzion/netcat --attach -ti -- sh"
+alias vpn="globalprotect launch-ui"
+
 # Shortcuts
 alias dl="cd ~/Downloads"
 alias g="git"

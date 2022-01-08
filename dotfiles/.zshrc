@@ -21,7 +21,7 @@ HIST_STAMPS="dd/mm/yyyy"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # shellcheck disable=SC2034
-plugins=(git asdf gitfast git-flow kubectl terraform last-working-dir common-aliases docker helm vscode golang rust zsh-completions history-substring-search autoswitch_virtualenv)
+plugins=(git asdf gitfast git-flow terraform last-working-dir common-aliases docker vscode golang rust history-substring-search autoswitch_virtualenv)
 
 # Load modules for completion
 autoload -U compinit && compinit
@@ -30,9 +30,15 @@ autoload -U compinit && compinit
 # shellcheck disable=SC1090
 source "$ZSH/oh-my-zsh.sh"
 
+# Enable kubectl zsh completion
+if hash kubectl 2>/dev/null; then
+	# shellcheck source=/dev/null
+	source <(kubectl completion zsh)
+fi
+
 # Load kubectl prompt data
 # shellcheck disable=SC1090
-source "$ZSH/plugins/zsh-kubectl-prompt/kubectl.zsh"
+# source "$ZSH/plugins/zsh-kubectl-prompt/kubectl.zsh"
 
 # Enable staship
 eval "$(starship init zsh)"

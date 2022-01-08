@@ -19,6 +19,3 @@ export HISTIGNORE=" *:ls:cd:cd -:pwd:clear:exit:date:* --help:* -h:pony:pony add
 # Configure kubectl
 export KUBE_EDITOR=vim
 export KUBECONFIG=$HOME/.kube/config
-for c in ~/.kube/*/config; do
-    export KUBECONFIG="$KUBECONFIG:$c"
-done
