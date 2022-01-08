@@ -155,12 +155,5 @@
 	insteadOf = "gist:"
 
 [user]
-	name = rbailly-talend
-	email = rbailly@talend.com
-	signingkey = 4EBE192ED4403700
-
-[commit]
-	gpgsign = true
-
-[hub]
-	protocol = git
+	name = Bailly Romain
+	email = rbailly17000@gmail.com
